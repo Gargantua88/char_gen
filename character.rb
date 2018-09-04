@@ -56,17 +56,20 @@ class Character
   def characteristic
     current_char = @characteristics.keys
     dices = dice_roller
-    puts "\nРаспределите следующие значения: #{dices}"
 
-    dices.each do |dice|
+    dices.size.times do
+      puts "\nРаспределите следующие значения: #{dices}"
+      puts "Куда запишем значение #{dices[0]}?"
       puts
-      puts dice
-      puts "Куда запишем это значение?"
-      current_char.each {|char| puts char }
-      user_input = gets.chomp
-      @characteristics[user_input] += dice
-      current_char.delete(user_input)
+
+      current_char.each_with_index {|char, i| puts "#{i}. #{char}"}
+
+      user_input = gets.to_i
+      @characteristics[@characteristics.keys[user_input]] += dices[0]
+      current_char[user_input] = ""
+      dices.delete_at(0)
     end
+
     @characteristics
   end
 
