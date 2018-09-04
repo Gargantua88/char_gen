@@ -1,4 +1,4 @@
-require_relative 'char_list'
+require_relative 'character'
 
 if (Gem.win_platform?)
   Encoding.default_external = Encoding.find(Encoding.locale_charmap)
