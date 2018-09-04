@@ -99,10 +99,10 @@ class Character
       2.times do
         puts
         puts "Выберите навык для изучения:"
-        skills.each {|skill| puts skill }
-        user_input = gets.downcase.chomp
-        @skills[user_input] += @prof_bonus
-        skills.delete(user_input)
+        skills.each_with_index {|skill,i| puts "#{i}. #{skill}"}
+        user_input = gets.to_i
+        @skills[@skills.keys[user_input]] += @prof_bonus
+        skills[user_input] = ""
       end
     end
   end
