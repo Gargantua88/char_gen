@@ -33,12 +33,24 @@ class Character
   end
 
   def dice_roller
-    dices = []
+    char_dices = []
+
     6.times do
-      dice = (rand(6) + 1) * 3
-      dices << dice
+      dices = []
+
+      4.times do |dice|
+        dice = (rand(6)+1)
+        dices << dice
+      end
+
+      dices.delete_at(dices.index(dices.min))
+
+      dice_summ = dices.inject(0){|sum,x| sum + x }
+
+      char_dices << dice_summ
     end
-    dices
+
+    char_dices
   end
 
   def characteristic
