@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Unarmored",
+    "cost": 0,
+    "basic_ac": 10,
+    "type": "light",
+    "stealth": 0
+  },
+  {
+    "name": "Padded",
+    "cost": 5,
+    "basic_ac": 11,
+    "type": "light",
+    "stealth": -3
+  },
+  {
+    "name": "Leather",
+    "cost": 10,
+    "basic_ac": 11,
+    "type": "light",
+    "stealth": 0
+  },
+  {
+    "name": "Studded leather",
+    "cost": 45,
+    "basic_ac": 12,
+    "type": "light",
+    "stealth": -3
+  },
+  {
+    "name": "Hide",
+    "cost": 10,
+    "basic_ac": 12,
+    "type": "medium",
+    "stealth": 0
+  },
+  {
+    "name": "Chain shirt",
+    "cost": 50,
+    "basic_ac": 13,
+    "type": "medium",
+    "stealth": 0
+  },
+  {
+    "name": "Scale mail",
+    "cost": 50,
+    "basic_ac": 14,
+    "type": "medium",
+    "stealth": -3
+  },
+  {
+    "name": "Breastplate",
+    "cost": 400,
+    "basic_ac": 14,
+    "type": "medium",
+    "stealth": 0
+  },
+  {
+    "name": "Half plate",
+    "cost": 740,
+    "basic_ac": 15,
+    "type": "medium",
+    "stealth": -3
+  },
+  {
+    "name": "Ring mail",
+    "cost": 30,
+    "basic_ac": 14,
+    "type": "heavy",
+    "stealth": -3
+  },
+  {
+    "name": "Chain mail",
+    "cost": 75,
+    "basic_ac": 16,
+    "type": "heavy",
+    "stealth": -3
+  },
+  {
+    "name": "Splint",
+    "cost": 200,
+    "basic_ac": 17,
+    "type": "heavy",
+    "stealth": -3
+  },
+  {
+    "name": "Plate",
+    "cost": 1500,
+    "basic_ac": 18,
+    "type": "heavy",
+    "stealth": -3
+  }
+]

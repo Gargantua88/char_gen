@@ -1,6 +1,6 @@
 class Character
   attr_accessor :name, :race, :char_class, :characteristics, :skills_number, :skills, :skills_list, :prof_bonus
-  attr_accessor :speed, :hit_points, :abilities, :saving_throw
+  attr_accessor :speed, :hit_points, :abilities, :saving_throw, :armor_type, :armor_class
 
   RACES = %w(
     дварф
@@ -115,6 +115,7 @@ class Character
     @prof_bonus = 2
     @abilities = []
     @saving_throw = []
+    @armor_type = []
   end
 
   def translate(item_for_translate)
@@ -222,61 +223,73 @@ class Character
     when "варвар"
       @hit_dice = 12
       @skills_number += 2
+      @armor_type = ["medium", "light"]
       @saving_throw.push(:strength, :constitution)
       @abilities.push("ярость", "защита без доспехов")
     when "бард"
       @hit_dice = 8
       @skills_number += 3
+      @armor_type = ["light"]
       @saving_throw.push(:dexterity, :charisma)
       @abilities.push("колдовство", "бардовское вдохновение")
     when "клерик"
       @hit_dice = 8
       @skills_number += 2
+      @armor_type = ["medium", "light"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("колдовство", "божественный домен")
     when "друид"
       @hit_dice = 8
       @skills_number += 2
+      @armor_type = ["medium", "light"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("рунный язык", "колдовство")
     when "воин"
       @hit_dice = 10
       @skills_number += 2
+      @armor_type = ["medium", "light", "heavy"]
       @saving_throw.push(:strength, :constitution)
       @abilities.push("боевой стиль", "второе дыхание")
     when "монах"
       @hit_dice = 8
       @skills_number += 2
+      @armor_type = ["none"]
       @saving_throw.push(:strength, :dexterity)
       @abilities.push("защита без доспехов", "боевые искусства")
     when "паладин"
       @hit_dice = 10
       @skills_number += 2
+      @armor_type = ["medium", "light", "heavy"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("божественное чувство", "наложение рук")
     when "следопыт"
       @hit_dice = 10
       @skills_number += 3
+      @armor_type = ["medium", "light"]
       @saving_throw.push(:strength, :dexterity)
       @abilities.push("избранный враг", "исследователь природы")
     when "вор"
       @hit_dice = 8
       @skills_number += 4
+      @armor_type = ["light"]
       @saving_throw.push(:dexterity, :intelligence)
       @abilities.push("компетентность", "скрытая атака", "воровской жаргон")
     when "чародей"
       @hit_dice = 6
       @skills_number += 2
+      @armor_type = ["none"]
       @saving_throw.push(:constitution, :charisma)
       @abilities.push("колдовство", "колдовское происхождение")
     when "волшебник"
       @hit_dice = 6
       @skills_number += 2
+      @armor_type = ["none"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("колдовство", "тайное восстановление")
     when "колдун"
       @hit_dice = 8
       @skills_number += 2
+      @armor_type = ["light"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("потусторонний покровитель", "магия договора")
     end
@@ -291,32 +304,13 @@ class Character
     translate(@skills_list)
   end
 
-  def weapons
-    case @char_class
-    when "варвар"
-      'martial_melee_weapons'
-    when "бард"
-      'simple_melee_weapons'
-    when "клерик"
-      'simple_melee_weapons'
-    when "друид"
-      'simple_melee_weapons'
-    when "воин"
-      'martial_melee_weapons'
-    when "монах"
-      'simple_melee_weapons'
-    when "паладин"
-      'martial_melee_weapons'
-    when "следопыт"
-      'martial_ranged_weapons'
-    when "вор"
-      'simple_randed_weapons'
-    when "чародей"
-      'simple_melee_weapons'
-    when "волшебник"
-      'simple_melee_weapons'
-    when "колдун"
-      'simple_melee_weapons'
-    end
+  def weapons_by_char_class
+    return :fighter if @race == "дварф"
+    TRANSLATIONS.key(@char_class)
+  end
+
+  def armor_calculator(armor)
+    @skills[:stealth] += armor.stealth
+    @armor_class = armor.basic_ac + characteristics_mod[:dexterity]
   end
 end

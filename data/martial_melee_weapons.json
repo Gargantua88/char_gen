@@ -114,6 +114,16 @@
         ]
     },
     {
+        "Name": "Scimitar",
+        "Cost": 25,
+        "Damage": 6,
+        "Damage_type": "slashing",
+        "Properties": [
+            "Light", 
+            "Finesse"
+        ]
+    },
+    {
         "Name": "Shortsword",
         "Cost": 10,
         "Damage": 6,
@@ -122,6 +132,23 @@
             "Light", 
             "Finesse"
         ]
+    },
+    {
+        "Name": "Trident",
+        "Cost": "5 gp",
+        "Damage": 6,
+        "Damage_type": "piercing",
+        "Properties": [
+            "Thrown (20/60)", 
+            "Versatile (1d8)"
+        ]
+    },
+    {
+        "Name": "War Pick",
+        "Cost": "5 gp",
+        "Damage": 8,
+        "Damage_type": "piercing",
+        "Properties": []
     },
     {
         "Name": "Warhammer",
