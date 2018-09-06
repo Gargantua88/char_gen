@@ -2,31 +2,31 @@ class Character
   attr_accessor :name, :race, :char_class, :characteristics, :skills_number, :skills, :skills_list, :prof_bonus
   attr_accessor :speed, :hit_points, :abilities, :saving_throw, :armor_type, :armor_class
 
-  RACES = %w(
-    дварф
-    эльф
-    халфлинг
-    человек
-    драконорожденный
-    гном
-    полуэльф
-    полуорк
-    тифлинг
+  RACES = %i(
+    dwarf
+    elf
+    halfling
+    human
+    dragonborn
+    gnome
+    half_elf
+    half_orc
+    tiefling
   )
 
-  CLASSES = %w(
-    варвар
-    бард
-    клерик
-    друид
-    воин
-    монах
-    паладин
-    следопыт
-    вор
-    чародей
-    волшебник
-    колдун
+  CLASSES = %i(
+    barbarian
+    bard
+    cleric
+    druid
+    fighter
+    monk
+    paladin
+    ranger
+    rogue
+    sorcerer
+    wizard
+    warlock
   )
 
   SKILLS = {
@@ -100,7 +100,16 @@ class Character
     rogue: "вор",
     sorcerer: "чародей",
     warlock: "волшебник",
-    wizard: "колдун"
+    wizard: "колдун",
+    dwarf: "дварф",
+    elf: "эльф",
+    halfling: "халфлинг",
+    human: "человек",
+    dragonborn: "драконорожденный",
+    gnome: "гном",
+    half_elf: "полуэльф",
+    half_orc: "полуорк",
+    tiefling: "тифлинг"
   }
 
   def initialize(name)
@@ -133,6 +142,8 @@ class Character
         translated_hash[TRANSLATIONS[key]] = value
       end
       return translated_hash
+    else
+      return TRANSLATIONS[item_for_translate]
     end
   end
 
@@ -167,50 +178,50 @@ class Character
   #рассчет кучи расовых бонусов
   def race_bonuses
     case @race
-    when "дварф"
+    when :dwarf
       @speed = 5
       characteristics[:constitution] += 2
       characteristics[:strength] += 2
       @abilities.push("темное зрение", "дварфская стойкость", "знание камня")
-    when "эльф"
+    when :elf
       @speed = 7
       characteristics[:dexterity] += 2
       characteristics[:wisdom] += 1
       @skills[:perception] += 2
       @abilities.push("темное зрение", "фейское происхождение", "транс", "защита дикой природы")
-    when "халфлинг"
+    when :halfling
       @speed = 5
       characteristics[:dexterity] += 2
       characteristics[:charisma] += 1
       @abilities.push("везучий", "храбрый", "проворство", "природная скрытность")
-    when "человек"
+    when :human
       @speed = 6
       characteristics.transform_values! {|v| v + 1 }
       @abilities.push("черта на выбор")
-    when "драконорожденный"
+    when :dragonborn
       @speed = 6
       characteristics[:strength] += 2
       characteristics[:charisma] += 1
       @abilities.push("драконье происхождение", "дыхание дракона", "сопротивление стихии")
-    when "гном"
+    when :gnome
       @speed = 5
       characteristics[:intelligence] += 2
       characteristics[:dexterity] += 1
       @abilities.push("темное зрение", "гномья хитрость", "природный иллюзионист", "язык зверушек")
-    when "полуэльф"
+    when :half_elf
       @speed = 6
       characteristics[:charisma] += 2
       characteristics[:dexterity] += 1
       characteristics[:wisdom] += 1
       @skills_number += 2
       @abilities.push("темное зрение", "фейское происхождение")
-    when "полуорк"
+    when :half_orc
       @speed = 6
       characteristics[:constitution] += 1
       characteristics[:strength] += 2
       @skills[:intimidation] += 2
       @abilities.push("темное зрение", "невероятная стойкость", "безумная атака")
-    when "тифлинг"
+    when :tiefling
       @speed = 6
       characteristics[:intelligence] += 1
       characteristics[:charisma] += 2
@@ -226,7 +237,7 @@ class Character
   #рассчет кучи классовых бонусов
   def class_bonuses
     case @char_class
-    when "варвар"
+    when :barbarian
       @hit_dice = 12
       #количество очков навыков
       @skills_number += 2
@@ -234,67 +245,67 @@ class Character
       @armor_type = ["medium", "light"]
       @saving_throw.push(:strength, :constitution)
       @abilities.push("ярость", "защита без доспехов")
-    when "бард"
+    when :bard
       @hit_dice = 8
       @skills_number += 3
       @armor_type = ["light"]
       @saving_throw.push(:dexterity, :charisma)
       @abilities.push("колдовство", "бардовское вдохновение")
-    when "клерик"
+    when :cleric
       @hit_dice = 8
       @skills_number += 2
       @armor_type = ["medium", "light"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("колдовство", "божественный домен")
-    when "друид"
+    when :druid
       @hit_dice = 8
       @skills_number += 2
       @armor_type = ["medium", "light"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("рунный язык", "колдовство")
-    when "воин"
+    when :fighter
       @hit_dice = 10
       @skills_number += 2
       @armor_type = ["medium", "light", "heavy"]
       @saving_throw.push(:strength, :constitution)
       @abilities.push("боевой стиль", "второе дыхание")
-    when "монах"
+    when :monk
       @hit_dice = 8
       @skills_number += 2
       @armor_type = ["none"]
       @saving_throw.push(:strength, :dexterity)
       @abilities.push("защита без доспехов", "боевые искусства")
-    when "паладин"
+    when :paladin
       @hit_dice = 10
       @skills_number += 2
       @armor_type = ["medium", "light", "heavy"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("божественное чувство", "наложение рук")
-    when "следопыт"
+    when :ranger
       @hit_dice = 10
       @skills_number += 3
       @armor_type = ["medium", "light"]
       @saving_throw.push(:strength, :dexterity)
       @abilities.push("избранный враг", "исследователь природы")
-    when "вор"
+    when :rogue
       @hit_dice = 8
       @skills_number += 4
       @armor_type = ["light"]
       @saving_throw.push(:dexterity, :intelligence)
       @abilities.push("компетентность", "скрытая атака", "воровской жаргон")
-    when "чародей"
+    when :sorcerer
       @hit_dice = 6
       @skills_number += 2
       @armor_type = ["none"]
       @saving_throw.push(:constitution, :charisma)
       @abilities.push("колдовство", "колдовское происхождение")
-    when "волшебник"
+    when :wizard
       @hit_dice = 6
       @skills_number += 2
       @armor_type = ["none"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("колдовство", "тайное восстановление")
-    when "колдун"
+    when :warlock
       @hit_dice = 8
       @skills_number += 2
       @armor_type = ["light"]
@@ -309,15 +320,15 @@ class Character
 
   #возвращает список доступных скилов по имени класса
   def class_skills
-    @skills_list = SKILLS_BY_CLASS[TRANSLATIONS.key(@char_class)]
+    @skills_list = SKILLS_BY_CLASS[@char_class]
     translate(@skills_list)
   end
 
   #возвращает имя класса для интерполяции в ссылку на файл доступного оружия
   def weapons_by_char_class
     #дварфам сразу доступны все виды оружия
-    return :fighter if @race == "дварф"
-    TRANSLATIONS.key(@char_class)
+    return :fighter if @race == :dwarf
+    @char_class.to_s
   end
 
   #рассчет бонусов от брони

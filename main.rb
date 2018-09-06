@@ -17,12 +17,12 @@ end
  char = Character.new(char_name)
 
 puts "\nВыберите расу:"
-Character::RACES.each_with_index { |race,i| puts "#{i}. #{race}"}
+Character::RACES.each_with_index { |race,i| puts "#{i}. #{char.translate(race)}"}
 user_input = gets.to_i
 char.race = Character::RACES[user_input]
 
 puts "\nВыберите класс:"
-Character::CLASSES.each_with_index { |char_class,i| puts "#{i}. #{char_class}"}
+Character::CLASSES.each_with_index { |char_class,i| puts "#{i}. #{char.translate(char_class)}"}
 user_input = gets.to_i
 char.char_class = Character::CLASSES[user_input]
 
@@ -64,7 +64,7 @@ end
 # Переходим к выбору оружия. Сформируем список доступного вооружения для нашего класса из одноименного json`а,
 # а после выбора игрока создадим соответствующий объект класса Weapon
 puts "Выберите оружие: "
-file = File.read("data/" + char.weapons_by_char_class.to_s + "_weapon.json")
+file = File.read("data/" + char.weapons_by_char_class + "_weapon.json")
 weapons_hash = JSON.parse(file, symbolize_names: true)
 weapons_hash.each_with_index {|item, i| puts "#{i}. #{item[:Name]}"}
 user_weapon = gets.to_i
@@ -98,9 +98,9 @@ char.armor_calculator(armor)
 # Тяжко, когда все путсы нужно запихивать в основную программу.
 puts
 puts "*" * 30
-puts "Имя: #{char.name}\nРаса: #{char.race}\nКласс: #{char.char_class}\nХиты: #{char.hit_points}\n"\
-  "Класс брони: #{char.armor_class}\nСкорость: #{char.speed}\nСпасброски: #{char.translate(char.saving_throw)}\n\n"\
-  "Характеристики: #{char.translate(char.characteristics)}\n\n"\
+puts "Имя: #{char.name}\nРаса: #{char.translate(char.race)}\nКласс: #{char.translate(char.char_class)}\n"\
+  "Хиты: #{char.hit_points}\nКласс брони: #{char.armor_class}\nСкорость: #{char.speed}\n"\
+  "Спасброски: #{char.translate(char.saving_throw)}\n\nХарактеристики: #{char.translate(char.characteristics)}\n\n"\
   "Навыки: #{char.translate(char.skills)}\n\nСпособности: #{char.abilities}\n\n"
 
 # Вывод оружия и брони из методов класса. Пока не знаю, нужно ли так подробно их будет выводить в основной проге, думаю.
