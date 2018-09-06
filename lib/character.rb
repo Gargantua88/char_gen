@@ -48,22 +48,23 @@ class Character
     stealth: 0,
     survival: 0
   }
-
+#доступные скилы каждому классу
   SKILLS_BY_CLASS = {
-  barbarian: %i(animal_handling athletics intimidation nature perception survival),
-  bard: SKILLS.keys,
-  cleric: %i(history insight medicine persuasion religion),
-  druid: %i(arcana animal_handling insight medicine nature perception religion survival),
-  fighter: %i(acrobatics animal_handling athletics history insight intimidation perception survival),
-  monk: %i(acrobatics athletics history insight religion stealth),
-  paladin: %i(athletics insight intimidation medicine persuasion religion),
-  ranger: %i(animal_handling athletics insight nature perception stealth survival),
-  rogue: %i(acrobatics athletics deception insight intimidation perception perfomance persuasion sleight_of_hand stealth),
-  sorcerer: %i(arcana deception insight intimidation persuasion religion),
-  warlock: %i(arcana deception history intimidation nature religion),
-  wizard: %i(arcana history insight medicine religion)
+    barbarian: %i(animal_handling athletics intimidation nature perception survival),
+    bard: SKILLS.keys,
+    cleric: %i(history insight medicine persuasion religion),
+    druid: %i(arcana animal_handling insight medicine nature perception religion survival),
+    fighter: %i(acrobatics animal_handling athletics history insight intimidation perception survival),
+    monk: %i(acrobatics athletics history insight religion stealth),
+    paladin: %i(athletics insight intimidation medicine persuasion religion),
+    ranger: %i(animal_handling athletics insight nature perception stealth survival),
+    rogue: %i(acrobatics athletics deception insight intimidation perception perfomance persuasion sleight_of_hand stealth),
+    sorcerer: %i(arcana deception insight intimidation persuasion religion),
+    warlock: %i(arcana deception history intimidation nature religion),
+    wizard: %i(arcana history insight medicine religion)
   }
 
+#ключи для метода перевода. Возможно, стоит их вынести за пределы проги.
   TRANSLATIONS = {
     strength: "сила",
     dexterity: "ловкость",
@@ -118,6 +119,7 @@ class Character
     @armor_type = []
   end
 
+  #сам метод перевода
   def translate(item_for_translate)
     if item_for_translate.is_a?(Array)
       translated_array = []
@@ -148,6 +150,7 @@ class Character
     result
   end
 
+#метод бросает кубики конкретно для характеристик
   def char_dice_roller
     char_dices = []
 
@@ -161,6 +164,7 @@ class Character
     char_dices
   end
 
+  #рассчет кучи расовых бонусов
   def race_bonuses
     case @race
     when "дварф"
@@ -181,7 +185,7 @@ class Character
       @abilities.push("везучий", "храбрый", "проворство", "природная скрытность")
     when "человек"
       @speed = 6
-      characteristics.transform_values {|v| v + 1 }
+      characteristics.transform_values! {|v| v + 1 }
       @abilities.push("черта на выбор")
     when "драконорожденный"
       @speed = 6
@@ -214,15 +218,19 @@ class Character
     end
   end
 
+  #рассчет модификаторов характеристик
   def characteristics_mod
     @characteristics_mod = @characteristics.transform_values {|v| (v-10)/2}
   end
 
+  #рассчет кучи классовых бонусов
   def class_bonuses
     case @char_class
     when "варвар"
       @hit_dice = 12
+      #количество очков навыков
       @skills_number += 2
+      #сразу же выставим значения доступных типов брони для класса Armor
       @armor_type = ["medium", "light"]
       @saving_throw.push(:strength, :constitution)
       @abilities.push("ярость", "защита без доспехов")
@@ -295,21 +303,26 @@ class Character
     end
   end
 
-  def hit_points
+  def max_hit_points
     @hit_points = @hit_dice + @characteristics_mod[:constitution]
   end
 
+  #возвращает список доступных скилов по имени класса
   def class_skills
     @skills_list = SKILLS_BY_CLASS[TRANSLATIONS.key(@char_class)]
     translate(@skills_list)
   end
 
+  #возвращает имя класса для интерполяции в ссылку на файл доступного оружия
   def weapons_by_char_class
+    #дварфам сразу доступны все виды оружия
     return :fighter if @race == "дварф"
     TRANSLATIONS.key(@char_class)
   end
 
+  #рассчет бонусов от брони
   def armor_calculator(armor)
+    @speed -= 1 if armor.type == "heavy"
     @skills[:stealth] += armor.stealth
     @armor_class = armor.basic_ac + characteristics_mod[:dexterity]
   end
