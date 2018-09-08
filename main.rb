@@ -16,6 +16,7 @@ if (Gem.win_platform?)
   end
 end
 
+## Попытка запустить бота, не успел пока =(
 # Dotenv.load
 # #----------------------------------------------------------------------
 # telegram_bot_api_key = ENV["TELEGRAM_BOT_API_KEY"]
@@ -33,6 +34,7 @@ end
 #   end
 # end
 # #----------------------------------------------------------------------
+#
 puts "Введите имя персонажа: "
 char_name = gets.chomp
 char = Character.new(char_name)
@@ -141,10 +143,10 @@ char.armor_calculator(armor)
 char_info = "Имя: #{char.name}\nРаса: #{char.translate(char.race)}\nКласс: #{char.translate(char.char_class)}\n"\
   "Хиты: #{char.hit_points}\nКласс брони: #{char.armor_class}\nСкорость: #{char.speed}\n"\
   "Спасброски: #{char.translate(char.saving_throw)}\n\nХарактеристики: #{char.translate(char.characteristics)}\n\n"\
-  "Навыки: #{char.translate(char.skills)}\n\nСпособности: #{char.abilities}\n\nОружие: #{weapon.name}\n"\
+  "Навыки: #{char.translate(char.skills)}\n\nСпособности: #{char.abilities}\n\nОружие: #{char.translate(weapon.name)}\n"\
   "Тип урона: #{weapon.damage_type}\nУрон:1d#{weapon.damage_dice}\nЦена: #{weapon.cost} золотых\n"\
-  "Свойства: #{weapon.properties}\n\nБроня: #{armor.name}\nБазовая защита: #{armor.basic_ac}\nТип: #{armor.type}\n"\
-  "Цена: #{armor.cost} золотых\nШтраф к скрытности: #{armor.stealth}\n\nЗаклинания #{spell_names}"
+  "Свойства: #{weapon.properties}\n\nДоспех: #{char.translate(armor.name)}\nБазовая защита: #{armor.basic_ac}\n"\
+  "Тип: #{armor.type}\nЦена: #{armor.cost} золотых\nШтраф к скрытности: #{armor.stealth}\n\nЗаклинания #{spell_names}"
 
 puts
 puts "*" * 30

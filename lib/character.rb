@@ -1,3 +1,4 @@
+# Для метода транслитерации, где хранятся переводы
 require 'yaml'
 
 class Character
@@ -103,7 +104,7 @@ class Character
              'Thunderwave', 'Unseen Servant']
   }
 
-#ключи для метода перевода. Возможно, стоит их вынести за пределы проги.
+#ключи для метода перевода.
   TRANSLATIONS = YAML.load_file('data/translations.yml')
 
   def initialize(name)
