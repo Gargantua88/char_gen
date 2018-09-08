@@ -1,3 +1,5 @@
+require 'yaml'
+
 class Character
   attr_accessor :name, :race, :char_class, :characteristics, :skills_number, :skills, :skills_list, :prof_bonus
   attr_accessor :speed, :hit_points, :abilities, :saving_throw, :armor_type, :armor_class, :spells_number
@@ -93,56 +95,16 @@ class Character
               'True Strike', 'Charm Person', 'Comprehend Languages', 'Expeditious Retreat', 'Hellish Rebuke',
               'Illusory Script', 'Protection from Evil and Good', 'Unseen Servan'],
     wizard: ['Acid Splash', 'Chill Touch', 'Dancing Lights', 'Fire Bolt', 'Light', 'Mage Hand', 'Mending', 'Message',
-             'Minor Illusion', 'Poison Spray', 'Prestidigitation', 'Ray of Frost', 'Shocking Grasp', 'True Strike']
+             'Minor Illusion', 'Poison Spray', 'Prestidigitation', 'Ray of Frost', 'Shocking Grasp', 'True Strike',
+             'Alarm', 'Burning Hands', 'Charm Person', 'Color Spray', 'Comprehend Languages', 'Detect Magic',
+             'Disguise Self', 'Expeditious Retreat', 'False Life', 'Feather Fall', 'Find Familiar', 'Floating Disk',
+             'Fog Cloud', 'Grease', 'Hideous Laughter', 'Identify', 'Illusory Script', 'Jump', 'Longstrider',
+             'Mage Armor', 'Magic Missile', 'Protection from Evil and Good', 'Shield', 'Silent Image', 'Sleep',
+             'Thunderwave', 'Unseen Servant']
   }
 
 #ключи для метода перевода. Возможно, стоит их вынести за пределы проги.
-  TRANSLATIONS = {
-    strength: "сила",
-    dexterity: "ловкость",
-    constitution: "телосложение",
-    intelligence: "интеллект",
-    wisdom: "мудрость",
-    charisma: "харизма",
-    acrobatics: "акробатика",
-    animal_handling: "уход за животными",
-    arcana: "магия",
-    athletics: "атлетика",
-    deception: "обман",
-    history: "история",
-    insight: "проницательность",
-    intimidation: "запугивание",
-    medicine: "медицина",
-    nature: "природа",
-    perception: "внимательность",
-    perfomance: "выступление",
-    persuasion: "убеждение",
-    religion: "религия",
-    sleight_of_hand: "ловкость рук",
-    stealth: "скрытность",
-    survival: "выживание",
-    barbarian: "варвар",
-    bard: "бард",
-    cleric: "клерик",
-    druid: "друид",
-    fighter: "воин",
-    monk: "монах",
-    paladin: "паладин",
-    ranger: "следопыт",
-    rogue: "вор",
-    sorcerer: "чародей",
-    warlock: "волшебник",
-    wizard: "колдун",
-    dwarf: "дварф",
-    elf: "эльф",
-    halfling: "халфлинг",
-    human: "человек",
-    dragonborn: "драконорожденный",
-    gnome: "гном",
-    half_elf: "полуэльф",
-    half_orc: "полуорк",
-    tiefling: "тифлинг"
-  }
+  TRANSLATIONS = YAML.load_file('data/translations.yml')
 
   def initialize(name)
     @name = name
@@ -166,17 +128,17 @@ class Character
     if item_for_translate.is_a?(Array)
       translated_array = []
       item_for_translate.each do |word|
-        translated_array << TRANSLATIONS[word]
+        translated_array << TRANSLATIONS[word.to_s]
       end
       return translated_array
     elsif item_for_translate.is_a?(Hash)
       translated_hash = {}
       item_for_translate.each do |key, value|
-        translated_hash[TRANSLATIONS[key]] = value
+        translated_hash[TRANSLATIONS[key.to_s]] = value
       end
       return translated_hash
     else
-      return TRANSLATIONS[item_for_translate]
+      return TRANSLATIONS[item_for_translate.to_s]
     end
   end
 

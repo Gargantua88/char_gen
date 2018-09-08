@@ -2,6 +2,7 @@ require_relative 'lib/character'
 require_relative 'lib/weapon'
 require_relative 'lib/armor'
 require_relative 'lib/spell'
+require 'yaml'
 require 'telegram/bot'
 require 'dotenv'
 require 'json'
@@ -15,23 +16,23 @@ if (Gem.win_platform?)
   end
 end
 
-Dotenv.load
-#----------------------------------------------------------------------
-telegram_bot_api_key = ENV["TELEGRAM_BOT_API_KEY"]
-
-Telegram::Bot::Client.run(telegram_bot_api_key) do |bot|
-  bot.listen do |message|
-    case message.text
-    when '/start'
-      bot.api.send_message(chat_id: message.chat.id, text: "Приветствую тебя, воитель #{message.from.first_name}!")
-    when '/stop'
-      bot.api.send_message(chat_id: message.chat.id, text: "До встречи в иных мирах, #{message.from.first_name}")
-    else
-      bot.api.send_message(chat_id: message.chat.id, text: "Извини, пока я ничем тебе не помогу!")
-    end
-  end
-end
-#----------------------------------------------------------------------
+# Dotenv.load
+# #----------------------------------------------------------------------
+# telegram_bot_api_key = ENV["TELEGRAM_BOT_API_KEY"]
+#
+# Telegram::Bot::Client.run(telegram_bot_api_key) do |bot|
+#   bot.listen do |message|
+#     case message.text
+#     when '/start'
+#       bot.api.send_message(chat_id: message.chat.id, text: "Приветствую, #{message.from.first_name}!")
+#     when '/stop'
+#       bot.api.send_message(chat_id: message.chat.id, text: "До встречи, #{message.from.first_name}")
+#     else
+#       bot.api.send_message(chat_id: message.chat.id, text: "Извини, пока я ничем тебе не помогу!")
+#     end
+#   end
+# end
+# #----------------------------------------------------------------------
 puts "Введите имя персонажа: "
 char_name = gets.chomp
 char = Character.new(char_name)
@@ -109,7 +110,7 @@ char_spells.each{|spell| spell_names << spell.name}
 puts "Выберите оружие: "
 file = File.read("data/" + char.weapons_by_char_class + "_weapon.json")
 weapons_hash = JSON.parse(file, symbolize_names: true)
-weapons_hash.each_with_index {|item, i| puts "#{i}. #{item[:Name]}"}
+weapons_hash.each_with_index {|item, i| puts "#{i}. #{char.translate(item[:Name])}"}
 user_weapon = gets.to_i
 current_weapon = weapons_hash[user_weapon]
 weapon = Weapon.new(current_weapon[:Name], current_weapon[:Damage_type], current_weapon[:Cost], current_weapon[:Damage],
@@ -122,10 +123,8 @@ char_armor = armor_hash.select{|armor| char.armor_type.include?(armor[:type])}
 # с необязательными параметрами Unarmored, это тоже своего рода вид доспехов по механике игры и используется для
 # ряда рассчетов
 unless char_armor.empty?
-  puts "Выберите защиту:"
-    char_armor.each_with_index do |item, i|
-      puts "#{i}. #{item[:name]}"
-    end
+  puts "Выберите доспех:"
+  char_armor.each_with_index {|item, i| puts "#{i}. #{char.translate(item[:name])}"}
   user_armor = gets.to_i
   current_armor = char_armor[user_armor]
   armor = Armor.new(current_armor[:name], current_armor[:basic_ac], current_armor[:cost], current_armor[:type],
