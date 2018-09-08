@@ -1,6 +1,6 @@
 class Character
   attr_accessor :name, :race, :char_class, :characteristics, :skills_number, :skills, :skills_list, :prof_bonus
-  attr_accessor :speed, :hit_points, :abilities, :saving_throw, :armor_type, :armor_class
+  attr_accessor :speed, :hit_points, :abilities, :saving_throw, :armor_type, :armor_class, :spells_number
 
   RACES = %i(
     dwarf
@@ -62,6 +62,38 @@ class Character
     sorcerer: %i(arcana deception insight intimidation persuasion religion),
     warlock: %i(arcana deception history intimidation nature religion),
     wizard: %i(arcana history insight medicine religion)
+  }
+
+  SPELLS_BY_CLASS = {
+    barbarian: %w(),
+    bard: ['Dancing Lights', 'Light', 'Mage Hand', 'Mending', 'Message', 'Minor Illusion', 'Prestidigitation',
+           'True Strike', 'Vicious Mockery', 'Animal Friendship', 'Bane', 'Charm Person', 'Comprehend Languages',
+           'Cure Wounds', 'Detect Magic', 'Disguise Self', 'Faerie Fire', 'Feather Fall', 'Healing Word', 'Heroism',
+           'Hideous Laughter', 'Identify', 'Illusory Script', 'Longstrider', 'Silent Image', 'Sleep',
+           'Speak with Animals', 'Thunderwave', 'Unseen Servant'],
+    cleric: ['Guidance', 'Light', 'Mending', 'Resistance', 'Sacred Flame', 'Thaumaturgy', 'Bane', 'Bless', 'Command',
+             'Create or Destroy Water', 'Cure Wounds', 'Detect Evil and Good', 'Detect Magic',
+             'Detect Poison and Disease', 'Guiding Bolt', 'Healing Word', 'Inflict Wounds',
+             'Protection from Evil and Good', 'Purify Food and Drink', 'Sanctuary', 'Shield of Faith'],
+    druid: ['Druidcraft', 'Guidance', 'Mending', 'Poison Spray', 'Produce Flame', 'Resistance', 'Shillelagh',
+            'Animal Friendship', 'Charm Person', 'Create or Destroy Water', 'Cure Wounds', 'Detect Magic',
+            'Detect Poison and Disease', 'Entangle', 'Faerie Fire', 'Fog Cloud', 'Goodberry', 'Healing Word', 'Jump',
+            'Longstrider', 'Purify Food and Drink', 'Speak with Animals' 'Thunderwave'],
+    fighter: %w(),
+    monk: %w(),
+    paladin: %w(),
+    ranger: %w(),
+    rogue: %w(),
+    sorcerer: ['Acid Splash', 'Chill Touch', 'Dancing Lights', 'Fire Bolt', 'Light', 'Mage Hand', 'Mending', 'Message',
+               'Minor Illusion', 'Poison Spray', 'Prestidigitation', 'Ray of Frost', 'Shocking Grasp', 'True Strike',
+               'Burning Hands', 'Charm Person', 'Color Spray', 'Comprehend Languages', 'Detect Magic', 'Disguise Self',
+               'Expeditious Retreat', 'False Life', 'Feather Fall', 'Fog Cloud', 'Jump', 'Mage Armor', 'Magic Missile',
+               'Shield', 'Silent Image', 'Sleep', 'Thunderwave'],
+    warlock: ['Chill Touch', 'Eldritch Blast', 'Mage Hand', 'Minor Illusion', 'Poison Spray', 'Prestidigitation',
+              'True Strike', 'Charm Person', 'Comprehend Languages', 'Expeditious Retreat', 'Hellish Rebuke',
+              'Illusory Script', 'Protection from Evil and Good', 'Unseen Servan'],
+    wizard: ['Acid Splash', 'Chill Touch', 'Dancing Lights', 'Fire Bolt', 'Light', 'Mage Hand', 'Mending', 'Message',
+             'Minor Illusion', 'Poison Spray', 'Prestidigitation', 'Ray of Frost', 'Shocking Grasp', 'True Strike']
   }
 
 #ключи для метода перевода. Возможно, стоит их вынести за пределы проги.
@@ -126,6 +158,7 @@ class Character
     @abilities = []
     @saving_throw = []
     @armor_type = []
+    @spells_number = 0
   end
 
   #сам метод перевода
@@ -248,18 +281,21 @@ class Character
     when :bard
       @hit_dice = 8
       @skills_number += 3
+      @spells_number = 6
       @armor_type = ["light"]
       @saving_throw.push(:dexterity, :charisma)
       @abilities.push("колдовство", "бардовское вдохновение")
     when :cleric
       @hit_dice = 8
       @skills_number += 2
+      @spells_number = 5
       @armor_type = ["medium", "light"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("колдовство", "божественный домен")
     when :druid
       @hit_dice = 8
       @skills_number += 2
+      @spells_number = 4
       @armor_type = ["medium", "light"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("рунный язык", "колдовство")
@@ -296,18 +332,21 @@ class Character
     when :sorcerer
       @hit_dice = 6
       @skills_number += 2
+      @spells_number = 6
       @armor_type = ["none"]
       @saving_throw.push(:constitution, :charisma)
       @abilities.push("колдовство", "колдовское происхождение")
     when :wizard
       @hit_dice = 6
       @skills_number += 2
+      @spells_number = 7
       @armor_type = ["none"]
       @saving_throw.push(:intelligence, :wisdom)
       @abilities.push("колдовство", "тайное восстановление")
     when :warlock
       @hit_dice = 8
       @skills_number += 2
+      @spells_number = 4
       @armor_type = ["light"]
       @saving_throw.push(:wisdom, :charisma)
       @abilities.push("потусторонний покровитель", "магия договора")
@@ -327,7 +366,7 @@ class Character
   #возвращает имя класса для интерполяции в ссылку на файл доступного оружия
   def weapons_by_char_class
     #дварфам сразу доступны все виды оружия
-    return :fighter if @race == :dwarf
+    return :fighter.to_s if @race == :dwarf
     @char_class.to_s
   end
 

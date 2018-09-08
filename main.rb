@@ -1,6 +1,7 @@
 require_relative 'lib/character'
 require_relative 'lib/weapon'
 require_relative 'lib/armor'
+require_relative 'lib/spell'
 require 'json'
 
 if (Gem.win_platform?)
@@ -61,6 +62,29 @@ char.skills_number.times do
   skill_list[user_input] = ""
 end
 
+# Приступаем к выбору заклинаний
+spells = JSON.parse(File.read('data/spell_list.json'))
+spell_list = []
+# Наполняем массив классовых заклинаний из массива всех заклинаний
+spells.each {|item| spell_list<<item if Character::SPELLS_BY_CLASS[char.char_class].include?(item[0])}
+# И заводим массив для выбранных игроком заклинаний
+char_spells = []
+# Который наполняем столькими заклинаниями, сколько позволяет взять класс персонажа
+char.spells_number.times do
+  puts "Выберите заклинание"
+  spell_list.each_with_index {|spell, i| puts "#{i}. #{spell[0]}"}
+  user_spell = gets.to_i
+  current_spell = spell_list[user_spell]
+  # Наполнять массив будем именно объектами класса, в дальнейшем нам понадобятся множество параметров заклинаний
+  spell = Spell.new(current_spell[0], current_spell[1]["casting_time"], current_spell[1]["components"], current_spell[1]["duration"],
+                    current_spell[1]["range"], current_spell[1]["level"])
+  char_spells << spell
+  spell_list[user_spell] = ""
+end
+# Сделаем массив названий заклинаний для дальнейшего вывода. Всю информацию нам выводить не нужно
+spell_names = []
+char_spells.each{|spell| spell_names << spell.name}
+
 # Переходим к выбору оружия. Сформируем список доступного вооружения для нашего класса из одноименного json`а,
 # а после выбора игрока создадим соответствующий объект класса Weapon
 puts "Выберите оружие: "
@@ -96,14 +120,22 @@ char.armor_calculator(armor)
 
 # Тут сложная простыня красивого вывода сгенеренного перса.
 # Тяжко, когда все путсы нужно запихивать в основную программу.
-puts
-puts "*" * 30
-puts "Имя: #{char.name}\nРаса: #{char.translate(char.race)}\nКласс: #{char.translate(char.char_class)}\n"\
+char_info = "Имя: #{char.name}\nРаса: #{char.translate(char.race)}\nКласс: #{char.translate(char.char_class)}\n"\
   "Хиты: #{char.hit_points}\nКласс брони: #{char.armor_class}\nСкорость: #{char.speed}\n"\
   "Спасброски: #{char.translate(char.saving_throw)}\n\nХарактеристики: #{char.translate(char.characteristics)}\n\n"\
-  "Навыки: #{char.translate(char.skills)}\n\nСпособности: #{char.abilities}\n\n"
+  "Навыки: #{char.translate(char.skills)}\n\nСпособности: #{char.abilities}\n\nОружие: #{weapon.name}\n"\
+  "Тип урона: #{weapon.damage_type}\nУрон:1d#{weapon.damage_dice}\nЦена: #{weapon.cost} золотых\n"\
+  "Свойства: #{weapon.properties}\n\nБроня: #{armor.name}\nБазовая защита: #{armor.basic_ac}\nТип: #{armor.type}\n"\
+  "Цена: #{armor.cost} золотых\nШтраф к скрытности: #{armor.stealth}\n\nЗаклинания #{spell_names}"
 
-# Вывод оружия и брони из методов класса. Пока не знаю, нужно ли так подробно их будет выводить в основной проге, думаю.
-puts weapon.info
 puts
-puts armor.info
+puts "*" * 30
+puts char_info
+
+file = File.new("./data/#{char.translate(char.char_class)} #{char.name}.txt", "a:UTF-8")
+
+file.print(char_info)
+
+file.close
+
+puts "\nИнформация о персонаже успешно сохранена в файл: \"#{char.translate(char.char_class)} #{char.name}.txt\"!"
