@@ -15,7 +15,7 @@
 
 ### Пример запуска
 
-[![asciicast](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP.svg)](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP?autoplay=1)
+[![Пример запуска](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP.svg)](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP?autoplay=1)
 
 
 ### Автор
