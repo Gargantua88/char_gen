@@ -3,8 +3,6 @@ require_relative 'lib/weapon'
 require_relative 'lib/armor'
 require_relative 'lib/spell'
 require 'yaml'
-require 'telegram/bot'
-require 'dotenv'
 require 'json'
 
 if (Gem.win_platform?)
@@ -16,25 +14,6 @@ if (Gem.win_platform?)
   end
 end
 
-## Попытка запустить бота, не успел пока =(
-# Dotenv.load
-# #----------------------------------------------------------------------
-# telegram_bot_api_key = ENV["TELEGRAM_BOT_API_KEY"]
-#
-# Telegram::Bot::Client.run(telegram_bot_api_key) do |bot|
-#   bot.listen do |message|
-#     case message.text
-#     when '/start'
-#       bot.api.send_message(chat_id: message.chat.id, text: "Приветствую, #{message.from.first_name}!")
-#     when '/stop'
-#       bot.api.send_message(chat_id: message.chat.id, text: "До встречи, #{message.from.first_name}")
-#     else
-#       bot.api.send_message(chat_id: message.chat.id, text: "Извини, пока я ничем тебе не помогу!")
-#     end
-#   end
-# end
-# #----------------------------------------------------------------------
-#
 puts "Введите имя персонажа: "
 char_name = gets.chomp
 char = Character.new(char_name)
