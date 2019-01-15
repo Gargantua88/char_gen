@@ -8,9 +8,4 @@ class Weapon
     @damage_dice = damage_dice
     @properties = properties
   end
-
-  def info
-    puts "Оружие: #{@name}\nТип урона: #{@damage_type}\nУрон:1d#{damage_dice}\n"\
-      "Цена: #{cost} золотых\nСвойства: #{@properties}"
-  end
 end

@@ -8,9 +8,4 @@ class Armor
     @type = type
     @stealth = stealth
   end
-
-  def info
-    puts "Броня: #{@name}\nБазовая защита: #{@basic_ac}\nТип: #{@type}\n"\
-      "Цена: #{@cost} золотых\nШтраф к скрытности: #{@stealth}"
-  end
 end
