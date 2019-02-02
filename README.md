@@ -12,12 +12,6 @@
 
 Для корректной работы требуется Ruby v. 2.4.1 или выше
 
-
-### Пример запуска
-
-[![Пример запуска](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP.svg)](https://asciinema.org/a/OToIy0gh6XSGGRb9n87cFq9JP?autoplay=1)
-
-
 ### Автор
 
 Ваш непокорный слуга
